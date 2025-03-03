@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from multiprocessing import cpu_count
-from typing import Literal
+from typing import Literal, Optional
 
 from simple_parsing import Serializable, field, list_field
 
@@ -52,6 +52,19 @@ class ConstructorConfig(Serializable):
     ] = "co-occurrence"
     """Type of neighbours to use. Only used if non_activating_source is 'neighbours'."""
 
+    # Add MLP-specific configuration
+    mlp_activation_threshold: float = 0.3
+    """Threshold for considering MLP activations significant.
+    Use a higher value for sparser interpretation."""
+
+    top_k_activations: Optional[int] = None
+    """Only use top K activations for MLP interpretation.
+    If set to None, sparsity_ratio will be used instead."""
+
+    sparsity_ratio: float = 0.01
+    """Percentage of MLP hidden dimension to keep activated (0.01 = 1%).
+    Only used when top_k_activations is None."""
+
 
 @dataclass
 class CacheConfig(Serializable):
@@ -102,6 +115,12 @@ class RunConfig(Serializable):
     """Name of sparse models associated with the model to explain, or path to
     directory containing their weights. Models must be loadable with sparsify
     or gemmascope."""
+
+    sparse_model_type: Literal["sae", "transcoder", "mlp"] = "sae"
+    """Type of model interpretation to perform. Options are:
+    - 'sae': Interpret sparse autoencoder features (default)
+    - 'transcoder': Interpret sparse transcoder features 
+    - 'mlp': Directly interpret MLP activations treating up_proj as encoder and down_proj as decoder"""
 
     hookpoints: list[str] = list_field()
     """list of model hookpoints to attach sparse models to."""

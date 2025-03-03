@@ -7,6 +7,7 @@ from transformers import PreTrainedModel
 from delphi.config import RunConfig
 
 from .custom.gemmascope import load_gemma_autoencoders
+from .custom.mlp_wrapper import load_mlp_hooks
 from .load_sparsify import load_sparsify_hooks, load_sparsify_sparse_coders
 
 
@@ -17,17 +18,27 @@ def load_hooks_sparse_coders(
 ) -> tuple[dict[str, Callable], bool]:
     """
     Load sparse coders for specified hookpoints.
+    Extended to support direct MLP activation interpretation.
 
     Args:
         model (PreTrainedModel): The model to load sparse coders for.
         run_cfg (RunConfig): The run configuration.
+        compile (bool): Whether to compile the sparse coders.
 
     Returns:
         dict[str, Callable]: A dictionary mapping hookpoints to sparse coders.
+        bool: Whether the sparse coders are transcoders.
     """
 
-    # Add SAE hooks to the model
-    if "gemma" not in run_cfg.sparse_model:
+    # Check if we're using MLP mode
+    if run_cfg.sparse_model_type == "mlp":
+        return load_mlp_hooks(
+            model,
+            run_cfg.hookpoints,
+            device=model.device,
+        )
+    # Otherwise use existing SAE/transcoder handlers
+    elif "gemma" not in run_cfg.sparse_model:
         hookpoint_to_sparse_encode, transcode = load_sparsify_hooks(
             model,
             run_cfg.sparse_model,

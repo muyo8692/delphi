@@ -74,14 +74,12 @@ def create_neighbours(
         saes = load_sparse_coders(run_cfg, device="cpu")
 
     for hookpoint in hookpoints:
-
         if constructor_cfg.neighbours_type == "co-occurrence":
             neighbour_calculator = NeighbourCalculator(
                 cache_dir=latents_path / hookpoint, number_of_neighbours=100
             )
 
         elif constructor_cfg.neighbours_type == "decoder_similarity":
-
             neighbour_calculator = NeighbourCalculator(
                 autoencoder=saes[hookpoint].cuda(), number_of_neighbours=100
             )
