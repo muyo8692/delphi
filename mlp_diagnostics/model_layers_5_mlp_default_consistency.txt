@@ -1,0 +1,42 @@
+Batch Consistency Test Results
+================================================================================
+
+Expected sparsity: 99.0000%
+Actual sparsity: 99.0234% ± 0.0000%
+
+Non-zero sum statistics:
+  Mean: 60.0000
+  Std: 0.0000
+  Coefficient of variation: 0.0000%
+
+Non-zero count statistics:
+  Mean: 320.0000
+  Std: 0.0000
+  Coefficient of variation: 0.0000%
+
+Individual run details:
+Run 1:
+  Non-zero sum: 60.0000
+  Non-zero count: 320
+  Sparsity: 99.0234%
+
+Run 2:
+  Non-zero sum: 60.0000
+  Non-zero count: 320
+  Sparsity: 99.0234%
+
+Run 3:
+  Non-zero sum: 60.0000
+  Non-zero count: 320
+  Sparsity: 99.0234%
+
+Run 4:
+  Non-zero sum: 60.0000
+  Non-zero count: 320
+  Sparsity: 99.0234%
+
+Run 5:
+  Non-zero sum: 60.0000
+  Non-zero count: 320
+  Sparsity: 99.0234%
+

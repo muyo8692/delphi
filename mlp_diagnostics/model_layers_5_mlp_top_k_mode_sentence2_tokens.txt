@@ -1,0 +1,130 @@
+Input: <|begin_of_text|>In mathematics, the Fibonacci sequence appears in many different contexts.
+
+Top activating features and their tokens:
+================================================================================
+
+Feature 2023 (sum: 5.8750):
+  - 'ĠFibonacci': 0.8555
+  - ',': 0.7930
+  - 'Ġmany': 0.6250
+  - 'Ġdifferent': 0.5312
+  - 'Ġmathematics': 0.5234
+
+Feature 1696 (sum: 1.4141):
+  - 'ĠFibonacci': 0.2227
+  - 'Ġsequence': 0.2178
+  - 'Ġmany': 0.2012
+  - 'Ġin': 0.1826
+  - 'Ġappears': 0.1787
+
+Feature 691 (sum: 1.1953):
+  - 'Ġsequence': 0.3105
+  - '<|begin_of_text|>': 0.2637
+  - 'Ġmathematics': 0.2451
+  - 'Ġappears': 0.2373
+  - '.': 0.1357
+
+Feature 1910 (sum: 0.9180):
+  - 'Ġthe': 0.3262
+  - ',': 0.3223
+  - 'Ġdifferent': 0.1748
+  - '<|begin_of_text|>': 0.0947
+
+Feature 1663 (sum: 0.9023):
+  - 'Ġin': 0.2021
+  - 'Ġdifferent': 0.1934
+  - 'Ġappears': 0.1924
+  - 'Ġmany': 0.1807
+  - 'Ġcontexts': 0.1348
+
+Feature 14 (sum: 0.8203):
+  - '.': 0.2021
+  - 'Ġappears': 0.1807
+  - 'Ġmathematics': 0.1709
+  - '<|begin_of_text|>': 0.1338
+  - 'Ġcontexts': 0.1328
+
+Feature 540 (sum: 0.8164):
+  - 'Ġdifferent': 0.1973
+  - 'Ġappears': 0.1699
+  - 'Ġmathematics': 0.1592
+  - 'Ġmany': 0.1562
+  - 'Ġin': 0.1338
+
+Feature 923 (sum: 0.8164):
+  - 'Ġin': 0.2236
+  - 'Ġdifferent': 0.2051
+  - 'Ġappears': 0.1982
+  - 'Ġmany': 0.1904
+
+Feature 258 (sum: 0.7852):
+  - 'Ġin': 0.1699
+  - 'Ġcontexts': 0.1660
+  - 'Ġmany': 0.1592
+  - 'Ġthe': 0.1543
+  - 'Ġmathematics': 0.1357
+
+Feature 146 (sum: 0.7578):
+  - '<|begin_of_text|>': 0.4219
+  - 'Ġin': 0.2109
+  - '.': 0.1250
+
+Feature 1612 (sum: 0.7461):
+  - 'Ġmany': 0.1768
+  - 'In': 0.1758
+  - 'Ġappears': 0.1602
+  - 'Ġthe': 0.1235
+  - '.': 0.1104
+
+Feature 1462 (sum: 0.7383):
+  - 'Ġthe': 0.2139
+  - '.': 0.1992
+  - ',': 0.1797
+  - 'Ġmany': 0.1445
+
+Feature 498 (sum: 0.7148):
+  - 'Ġthe': 0.2217
+  - 'ĠFibonacci': 0.2188
+  - 'Ġsequence': 0.1631
+  - 'In': 0.1099
+
+Feature 1157 (sum: 0.6992):
+  - 'Ġsequence': 0.3945
+  - '<|begin_of_text|>': 0.1729
+  - 'Ġappears': 0.1328
+
+Feature 293 (sum: 0.6641):
+  - 'Ġdifferent': 0.1865
+  - 'Ġmany': 0.1846
+  - ',': 0.1504
+  - 'In': 0.1426
+
+Feature 609 (sum: 0.6328):
+  - 'Ġcontexts': 0.2236
+  - 'Ġsequence': 0.1729
+  - 'Ġappears': 0.1279
+  - '.': 0.1064
+
+Feature 265 (sum: 0.6328):
+  - 'Ġin': 0.1924
+  - 'Ġappears': 0.1621
+  - ',': 0.1504
+  - 'Ġthe': 0.1260
+
+Feature 1875 (sum: 0.6289):
+  - 'Ġmathematics': 0.1982
+  - 'ĠFibonacci': 0.1738
+  - ',': 0.1416
+  - '.': 0.1162
+
+Feature 1504 (sum: 0.6094):
+  - '<|begin_of_text|>': 0.2324
+  - ',': 0.2217
+  - 'Ġcontexts': 0.1543
+
+Feature 837 (sum: 0.6016):
+  - ',': 0.2041
+  - 'Ġthe': 0.1602
+  - 'In': 0.1289
+  - '.': 0.1104
+

@@ -177,6 +177,7 @@ async def process_cache(
         record = result.record
         record.explanation = result.explanation
         record.extra_examples = record.not_active
+
         return record
 
     # Saves the score to a file
@@ -306,10 +307,15 @@ async def run(
 ):
     from datetime import datetime
 
-    base_path = Path.cwd() / "results" / str(datetime.now().strftime("%m%d%H%M"))
+    base_path = Path.cwd() / "results"
 
     if run_cfg.name:
-        base_path = base_path / run_cfg.name
+        base_path = (
+            base_path
+            / run_cfg.name
+            / str(datetime.now().strftime("%m%d"))
+            / str(datetime.now().strftime("%H%M"))
+        )
 
     base_path.mkdir(parents=True, exist_ok=True)
 

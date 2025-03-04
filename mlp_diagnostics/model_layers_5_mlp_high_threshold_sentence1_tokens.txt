@@ -1,0 +1,126 @@
+Input: <|begin_of_text|>The quick brown fox jumps over the lazy dog while the cat watches nearby.
+
+Top activating features and their tokens:
+================================================================================
+
+Feature 2023 (sum: 3.2344):
+  - 'Ġwatches': 0.6523
+  - 'Ġlazy': 0.5898
+  - 'Ġnearby': 0.4414
+  - 'The': 0.3574
+  - 'Ġdog': 0.3066
+
+Feature 195 (sum: 1.3516):
+  - 'Ġthe': 0.2969
+  - 'Ġover': 0.2871
+  - 'Ġlazy': 0.2314
+  - 'Ġbrown': 0.1885
+  - 'Ġwatches': 0.1865
+
+Feature 265 (sum: 1.0391):
+  - 'Ġover': 0.2539
+  - 'Ġjumps': 0.1729
+  - 'Ġwhile': 0.1621
+  - 'Ġcat': 0.1572
+  - 'Ġbrown': 0.1533
+
+Feature 1673 (sum: 1.0156):
+  - 'Ġcat': 0.2637
+  - 'Ġwatches': 0.2246
+  - 'Ġover': 0.2051
+  - 'Ġthe': 0.1826
+  - 'Ġdog': 0.1387
+
+Feature 977 (sum: 0.9453):
+  - 'Ġthe': 0.2168
+  - 'Ġcat': 0.2012
+  - '.': 0.1924
+  - 'Ġdog': 0.1719
+  - 'Ġwhile': 0.1641
+
+Feature 1504 (sum: 0.9219):
+  - '<|begin_of_text|>': 0.2324
+  - 'Ġthe': 0.2168
+  - 'Ġbrown': 0.1748
+  - 'Ġdog': 0.1621
+  - 'Ġcat': 0.1367
+
+Feature 146 (sum: 0.9141):
+  - '.': 0.4941
+  - '<|begin_of_text|>': 0.4219
+
+Feature 1923 (sum: 0.8398):
+  - 'Ġover': 0.2832
+  - 'Ġthe': 0.2637
+  - 'Ġjumps': 0.1514
+  - 'Ġcat': 0.1416
+
+Feature 1942 (sum: 0.7617):
+  - 'Ġthe': 0.2197
+  - 'Ġover': 0.2139
+  - 'Ġnearby': 0.1777
+  - 'Ġjumps': 0.1504
+
+Feature 1933 (sum: 0.7266):
+  - 'Ġthe': 0.2246
+  - 'Ġcat': 0.1797
+  - '.': 0.1621
+  - 'Ġwhile': 0.1592
+
+Feature 1701 (sum: 0.6914):
+  - 'Ġover': 0.1934
+  - 'Ġbrown': 0.1758
+  - 'Ġquick': 0.1699
+  - 'Ġdog': 0.1514
+
+Feature 1003 (sum: 0.6875):
+  - 'Ġthe': 0.1914
+  - 'Ġcat': 0.1816
+  - 'Ġwhile': 0.1729
+  - 'Ġthe': 0.1396
+
+Feature 145 (sum: 0.6719):
+  - 'Ġthe': 0.1758
+  - 'Ġjumps': 0.1729
+  - 'Ġwatches': 0.1709
+  - 'Ġthe': 0.1504
+
+Feature 73 (sum: 0.6641):
+  - 'Ġfox': 0.1885
+  - 'Ġlazy': 0.1699
+  - 'Ġdog': 0.1572
+  - 'Ġcat': 0.1475
+
+Feature 856 (sum: 0.6406):
+  - 'Ġbrown': 0.1875
+  - 'Ġwatches': 0.1631
+  - 'Ġthe': 0.1494
+  - '<|begin_of_text|>': 0.1416
+
+Feature 1855 (sum: 0.6289):
+  - 'Ġfox': 0.1729
+  - 'Ġthe': 0.1621
+  - 'Ġcat': 0.1523
+  - 'Ġwhile': 0.1426
+
+Feature 827 (sum: 0.6094):
+  - 'Ġover': 0.1621
+  - '.': 0.1553
+  - 'Ġnearby': 0.1504
+  - 'Ġwhile': 0.1396
+
+Feature 923 (sum: 0.6016):
+  - 'Ġjumps': 0.2432
+  - 'Ġwatches': 0.2148
+  - 'Ġlazy': 0.1445
+
+Feature 788 (sum: 0.5859):
+  - 'Ġfox': 0.2637
+  - 'Ġdog': 0.1709
+  - 'Ġjumps': 0.1533
+
+Feature 1124 (sum: 0.5547):
+  - 'Ġdog': 0.2109
+  - 'Ġwatches': 0.1836
+  - 'Ġthe': 0.1621
+

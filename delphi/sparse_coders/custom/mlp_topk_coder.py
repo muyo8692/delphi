@@ -31,37 +31,39 @@ class MLPTopKCoder:
         """
         Extract hidden activations from the MLP.
 
+        For gated activations (as in LLaMA‑3), it computes:
+            hidden_activations = act_fn(gate_proj(x)) * up_proj(x)
+        Otherwise, it computes:
+            hidden_activations = act_fn(up_proj(x))
+
         Args:
             x: Input tensor from residual stream
 
         Returns:
-            Hidden activations after up_proj and activation function
+            Hidden activations after applying the activation function (and gating if present)
         """
-        # Get the up_proj weights and compute pre-activations
-        up_proj = self.mlp_module.up_proj
-        pre_activations = up_proj(x)
-
-        # Apply activation function (SiLU, GELU, etc.)
-        if hasattr(self.mlp_module, "act_fn"):
-            activation_fn = self.mlp_module.act_fn
-        elif hasattr(self.mlp_module, "activation_fn"):
-            activation_fn = self.mlp_module.activation_fn
+        if hasattr(self.mlp_module, "gate_proj"):
+            # Handle gated activation (e.g. in LLaMA‑3)
+            gate = self.mlp_module.gate_proj(x)
+            up = self.mlp_module.up_proj(x)
+            if hasattr(self.mlp_module, "act_fn"):
+                activation_fn = self.mlp_module.act_fn
+            elif hasattr(self.mlp_module, "activation_fn"):
+                activation_fn = self.mlp_module.activation_fn
+            else:
+                raise ValueError("No activation function found in MLP module")
+            hidden_activations = activation_fn(gate) * up
         else:
-            # Default to GELU if no activation function is found
-            activation_fn = torch.nn.functional.gelu
-
-        hidden_activations = activation_fn(pre_activations)
-
-        # Shape verification
-        # Hidden activation shape should be [batch_size, seq_length, hidden_dim]
-        # Hidden dimension should match the up_proj output dimension
-        # For LLaMA-3-8B, typical dimensions should be ~8192 for hidden_dim
-        # if torch.rand(1).item() < 0.01:  # Log for ~1% of forward passes
-        #     print(f"Input shape: {x.shape}")
-        #     print(f"Hidden activation shape: {hidden_activations.shape}")
-        #     print(f"Up proj weight shape: {up_proj.weight.shape}")
-        #     # Check if we're getting the expected MLP hidden dimension
-        #     print(f"Expected hidden dim: {up_proj.weight.shape[0]}")
+            raise NotImplementedError("Non-gated MLPs are not supported yet")
+            # Standard MLP case without gating
+            pre_activations = self.mlp_module.up_proj(x)
+            if hasattr(self.mlp_module, "act_fn"):
+                activation_fn = self.mlp_module.act_fn
+            elif hasattr(self.mlp_module, "activation_fn"):
+                activation_fn = self.mlp_module.activation_fn
+            else:
+                raise ValueError("No activation function found in MLP module")
+            hidden_activations = activation_fn(pre_activations)
 
         # Set hidden size if not already set
         if self.hidden_size is None:
@@ -116,9 +118,6 @@ def process_mlp_activations(
     # Create sparse activations - start with a copy of the original
     sparse_acts = activations.clone()
 
-    # OPTION 1: ALWAYS USE TOP-K (RECOMMENDED)
-    # --------------------------------------
-    # Determine sparsity level
     hidden_dim = activations.shape[-1]
     effective_k = (
         top_k if top_k is not None else max(1, int(hidden_dim * sparsity_ratio))
@@ -128,16 +127,12 @@ def process_mlp_activations(
     # Apply top-k selection directly to get guaranteed sparsity
     for batch_idx in range(activations.shape[0]):
         for seq_idx in range(activations.shape[1]):
-            # Get top-k values and their indices
             values, indices = torch.topk(activations[batch_idx, seq_idx], k=effective_k)
-
-            # Zero out all activations then restore only top-k
             sparse_acts[batch_idx, seq_idx, :] = 0.0
             sparse_acts[batch_idx, seq_idx, indices] = activations[
                 batch_idx, seq_idx, indices
             ]
 
-    # ADDED: Check final sparsity
     final_sparsity = (sparse_acts > 0).float().mean().item()
 
     if debug or torch.rand(1).item() < 0.01:  # Log ~1% of calls
@@ -172,13 +167,12 @@ def load_topk_mlp_coder_hooks(
             # ADDED: Print module information for verification
             print(f"  ✓ Found {hookpoint}:")
             print(f"    - Type: {type(mlp_module).__name__}")
-
-            # Check for expected MLP components
+            if hasattr(mlp_module, "gate_proj"):
+                print(f"    - gate_proj: {mlp_module.gate_proj.weight.shape}")
             if hasattr(mlp_module, "up_proj"):
                 print(f"    - up_proj: {mlp_module.up_proj.weight.shape}")
             else:
                 print(f"    ⚠️ Warning: No up_proj found in {hookpoint}")
-
             if hasattr(mlp_module, "down_proj"):
                 print(f"    - down_proj: {mlp_module.down_proj.weight.shape}")
             else:
@@ -200,9 +194,7 @@ def load_topk_mlp_coder_hooks(
             # Create a closure to avoid the parameter naming issue
             def create_hook(_transcoder, _threshold, _sparsity_ratio, _top_k):
                 def hook(x):
-                    # Get hidden activations
                     hidden_acts = _transcoder(x)
-                    # Process into sparse form
                     sparse_acts = process_mlp_activations(
                         hidden_acts,
                         sparsity_ratio=_sparsity_ratio,
@@ -213,7 +205,6 @@ def load_topk_mlp_coder_hooks(
 
                 return hook
 
-            # Use the closure
             hookpoint_to_hook[hookpoint] = create_hook(
                 transcoder, threshold, sparsity_ratio, top_k
             )

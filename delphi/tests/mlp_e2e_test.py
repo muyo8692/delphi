@@ -41,8 +41,8 @@ async def run_mlp_interpretation():
         non_activating_source="random",
         # MLP-specific configs
         mlp_activation_threshold=0.3,
-        top_k_activations=5,  # Use sparsity ratio instead of fixed top-k
-        sparsity_ratio=0.01,  # Keep 1% of hidden dimensions active
+        # top_k_activations=5,  # Use sparsity ratio instead of fixed top-k
+        sparsity_ratio=0.99,  # Keep 1% of hidden dimensions active
     )
 
     # Configure sampling
@@ -136,7 +136,7 @@ async def run_sae_interpretation():
         ],
         explainer_model="hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
         explainer_model_max_len=8192,
-        max_latents=100,  # Limit to 100 features per MLP for testing
+        max_latents=100,  # Limit to 100 features per SAE for testing
         seed=42,
         num_gpus=torch.cuda.device_count(),
         filter_bos=True,
@@ -204,7 +204,7 @@ async def run_transcoder_interpretation():
         ],
         explainer_model="hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
         explainer_model_max_len=8192,
-        max_latents=100,  # Limit to 100 features per MLP for testing
+        max_latents=100,  # Limit to 100 features per Transcoder for testing
         seed=42,
         num_gpus=torch.cuda.device_count(),
         filter_bos=True,

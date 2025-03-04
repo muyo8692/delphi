@@ -38,30 +38,34 @@ async def test_mlp_pipeline():
     # Manually run hooks on output
     from delphi.latents.collect_activations import collect_activations
 
+    # First run the model with collect_activations to get raw activations
     with collect_activations(
         model, list(hookpoint_to_hook.keys()), transcode
-    ) as activations:
+    ) as raw_activations:
         model(**inputs)
 
-        # Show collected activations
-        for hookpoint, activation_tensor in activations.items():
-            print(f"\nCollected activations for {hookpoint}:")
-            print(f"  - Shape: {activation_tensor.shape}")
-            print(f"  - Non-zero: {(activation_tensor != 0).sum().item()}")
-            print(f"  - Sparsity: {(activation_tensor != 0).float().mean().item():.6f}")
-            print(
-                f"  - Min/Max: {activation_tensor.min().item():.4f} / {activation_tensor.max().item():.4f}"
-            )
+    # Now manually apply your hook to process the raw activations
+    for hookpoint, raw_activation in raw_activations.items():
+        hook_fn = hookpoint_to_hook[hookpoint]
+        processed_activation = hook_fn(raw_activation)
 
-            # Check if sparsity is close to target
-            target_sparsity = 0.01  # 1%
-            actual_sparsity = (activation_tensor != 0).float().mean().item()
-            if abs(actual_sparsity - target_sparsity) < 0.001:
-                print("  ✓ Sparsity matches target")
-            else:
-                print(
-                    f"  ⚠️ Sparsity {actual_sparsity:.4f} doesn't match target {target_sparsity:.4f}"
-                )
+        print(f"\nProcessed activations for {hookpoint}:")
+        print(f"  - Shape: {processed_activation.shape}")
+        print(f"  - Non-zero: {(processed_activation != 0).sum().item()}")
+        print(f"  - Sparsity: {(processed_activation != 0).float().mean().item():.6f}")
+        print(
+            f"  - Min/Max: {processed_activation.min().item():.4f} / {processed_activation.max().item():.4f}"
+        )
+
+        # Check if sparsity is close to target
+        target_sparsity = 0.01  # 1%
+        actual_sparsity = (processed_activation != 0).float().mean().item()
+        if abs(actual_sparsity - target_sparsity) < 0.001:
+            print("  ✓ Sparsity matches target")
+        else:
+            print(
+                f"  ⚠️ Sparsity {actual_sparsity:.4f} doesn't match target {target_sparsity:.4f}"
+            )
 
     print("\nPipeline check complete")
 

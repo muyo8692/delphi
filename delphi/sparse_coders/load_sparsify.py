@@ -111,6 +111,7 @@ def load_sparsify_hooks(
         dict[str, Callable]: A dictionary mapping hookpoints to encode functions.
     """
     device = model.device or "cpu"
+
     sparse_model_dict = load_sparsify_sparse_coders(
         name,
         hookpoints,

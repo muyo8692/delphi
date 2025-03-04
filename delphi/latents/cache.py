@@ -133,7 +133,9 @@ class Cache:
         nonzero_latent_activations = torch.cat(nonzero_latent_activations, dim=0)
         return nonzero_latent_locations, nonzero_latent_activations
 
-    def get_nonzeros(self, latents: location_tensor_shape, module_path: str) -> tuple[
+    def get_nonzeros(
+        self, latents: location_tensor_shape, module_path: str
+    ) -> tuple[
         location_tensor_shape,
         location_tensor_shape,
     ]:
@@ -279,7 +281,7 @@ class LatentCache:
 
         print(f"Total tokens processed: {total_tokens:,}")
         self.cache.save()
-        del sae_latents
+        del sae_latents  # type: ignore
 
     def save(self, save_dir: Path, save_tokens: bool = True):
         """

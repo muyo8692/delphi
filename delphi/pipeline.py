@@ -83,7 +83,7 @@ class Pipeline:
         """
         self.pipes = [loader] + list(pipes)
 
-    async def run(self, max_concurrent: int = 10) -> list[Any]:
+    async def run(self, max_concurrent: int = 20) -> list[Any]:
         """
         Run the pipeline with a maximum number of concurrent tasks.
 
