@@ -7,7 +7,7 @@ from transformers import PreTrainedModel
 from delphi.config import RunConfig
 
 from .custom.gemmascope import load_gemma_autoencoders
-from .custom.mlp_wrapper import load_mlp_hooks
+from .custom.mlp_topk_coder import load_topk_mlp_coder_hooks
 from .load_sparsify import load_sparsify_hooks, load_sparsify_sparse_coders
 
 
@@ -32,10 +32,13 @@ def load_hooks_sparse_coders(
 
     # Check if we're using MLP mode
     if run_cfg.sparse_model_type == "mlp":
-        return load_mlp_hooks(
+        return load_topk_mlp_coder_hooks(
             model,
             run_cfg.hookpoints,
-            device=model.device,
+            sparsity_ratio=run_cfg.constructor_cfg.sparsity_ratio,
+            top_k=run_cfg.constructor_cfg.top_k_activations,
+            threshold=run_cfg.constructor_cfg.mlp_activation_threshold,
+            device=str(model.device),
         )
     # Otherwise use existing SAE/transcoder handlers
     elif "gemma" not in run_cfg.sparse_model:

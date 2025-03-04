@@ -60,15 +60,13 @@ async def run_mlp_interpretation():
         model="meta-llama/Meta-Llama-3-8B",
         # Use the same model name with the special type flag for MLP interpretation
         sparse_model="meta-llama/Meta-Llama-3-8B",
-        sparse_model_type="mlp",  # This is the key difference for MLP interpretation
+        sparse_model_type="mlp",  # Now treating MLPs as transcoders
         # Target specific MLPs - use same format as in original pipeline
         hookpoints=[
             "layers.5.mlp",  # Lower layer
-            "layers.15.mlp",  # Middle layer
-            "layers.25.mlp",  # Upper layer
         ],
         explainer_model="hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4",
-        explainer_model_max_len=4096,
+        explainer_model_max_len=8192,
         max_latents=100,  # Limit to 100 features per MLP for testing
         seed=42,
         num_gpus=torch.cuda.device_count(),
