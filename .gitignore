@@ -184,3 +184,5 @@ results/
 statistics/
 *nodeinfo
 .vscode/
+job_outputs/
+.d*

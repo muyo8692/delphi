@@ -103,13 +103,13 @@ class RunConfig(Serializable):
     sampler_cfg: SamplerConfig
 
     model: str = field(
-        default="meta-llama/Meta-Llama-3-8B",
+        default="meta-llama/Llama-3.2-1B",
         positional=True,
     )
     """Name of the model to explain."""
 
     sparse_model: str = field(
-        default="EleutherAI/sae-llama-3-8b-32x",
+        default="EleutherAI/skip-transcoder-Llama-3.2-1B-131k",
         positional=True,
     )
     """Name of sparse models associated with the model to explain, or path to
