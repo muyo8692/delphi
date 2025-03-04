@@ -134,20 +134,6 @@ def load_topk_mlp_coder_hooks(
     threshold: float = 0.3,
     device: str = "cuda",
 ) -> tuple[Dict[str, Callable], bool]:
-    """
-    Load MLP transcoder hooks for specified hookpoints.
-
-    Args:
-        model: The transformer model
-        hookpoints: List of hookpoints to access MLP modules
-        sparsity_ratio: Percentage of activations to keep
-        top_k: Fixed number of activations to keep (overrides sparsity_ratio)
-        threshold: Relative threshold for significant activations
-        device: Device to place modules on
-
-    Returns:
-        Dictionary mapping hookpoints to hooks and transcode flag
-    """
     hookpoint_to_hook = {}
 
     for hookpoint in hookpoints:
@@ -157,30 +143,28 @@ def load_topk_mlp_coder_hooks(
         # Create MLP transcoder
         transcoder = MLPTopKCoder(mlp_module, device)
 
-        # Create the hook function
-        def hook_fn(transcoder, threshold, sparsity_ratio, top_k, x):
-            # Get hidden activations
-            hidden_acts = transcoder(x)
-            # Process into sparse form
-            sparse_acts = process_mlp_activations(
-                hidden_acts,
-                sparsity_ratio=sparsity_ratio,
-                top_k=top_k,
-                threshold=threshold,
-            )
-            return sparse_acts
+        # Create a closure to avoid the parameter naming issue
+        def create_hook(_transcoder, _threshold, _sparsity_ratio, _top_k):
+            def hook(x):
+                # Get hidden activations
+                hidden_acts = _transcoder(x)
+                # Process into sparse form
+                sparse_acts = process_mlp_activations(
+                    hidden_acts,
+                    sparsity_ratio=_sparsity_ratio,
+                    top_k=_top_k,
+                    threshold=_threshold,
+                )
+                return sparse_acts
 
-        # Create the specific hook for this MLP
-        hookpoint_to_hook[hookpoint] = partial(
-            hook_fn,
-            transcoder=transcoder,
-            threshold=threshold,
-            sparsity_ratio=sparsity_ratio,
-            top_k=top_k,
+            return hook
+
+        # Use the closure
+        hookpoint_to_hook[hookpoint] = create_hook(
+            transcoder, threshold, sparsity_ratio, top_k
         )
 
     # MLPs as transcoders should set the transcode flag to True
-    # This matches how transcoders are handled in the pipeline
     transcode = True
 
     return hookpoint_to_hook, transcode
