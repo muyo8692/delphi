@@ -304,7 +304,10 @@ def non_redundant_hookpoints(
 async def run(
     run_cfg: RunConfig,
 ):
-    base_path = Path.cwd() / "results"
+    from datetime import datetime
+
+    base_path = Path.cwd() / "results" / str(datetime.now().strftime("%m%d%H%M"))
+
     if run_cfg.name:
         base_path = base_path / run_cfg.name
 

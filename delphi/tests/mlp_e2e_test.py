@@ -7,13 +7,14 @@ and compare results with SAE/transcoder interpretations.
 import asyncio
 import os
 import time
+from datetime import datetime
 from pathlib import Path
 
 import torch
 
 from delphi.__main__ import run
-from delphi.config import CacheConfig, ConstructorConfig, SamplerConfig, RunConfig
 from delphi.comparison_utils import create_comparison_report
+from delphi.config import CacheConfig, ConstructorConfig, RunConfig, SamplerConfig
 
 
 async def run_mlp_interpretation():
@@ -40,7 +41,7 @@ async def run_mlp_interpretation():
         non_activating_source="random",
         # MLP-specific configs
         mlp_activation_threshold=0.3,
-        top_k_activations=200,  # Use sparsity ratio instead of fixed top-k
+        top_k_activations=5,  # Use sparsity ratio instead of fixed top-k
         sparsity_ratio=0.01,  # Keep 1% of hidden dimensions active
     )
 
@@ -225,7 +226,7 @@ async def run_comparison():
     Compare MLP interpretation results with previous SAE results.
     """
     # Base directory with results
-    base_path = Path.cwd() / "results"
+    base_path = Path.cwd() / "results" / str(datetime.now().strftime("%m%d%H%M"))
 
     # Create comparison report
     create_comparison_report(

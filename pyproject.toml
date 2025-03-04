@@ -30,6 +30,7 @@ dependencies = [
     "setuptools>=75.8.2",
     "matplotlib>=3.10.1",
     "seaborn>=0.13.2",
+    "ipdb>=0.13.13",
 ]
 
 [project.optional-dependencies]
