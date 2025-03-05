@@ -29,7 +29,7 @@ async def run_mlp_interpretation():
         batch_size=16,
         cache_ctx_len=256,
         n_splits=5,
-        n_tokens=100_000_000,  # Start with 100k for testing, increase for better results
+        n_tokens=100_000,  # Start with 100k for testing, increase for better results
     )
 
     # Configure example construction
