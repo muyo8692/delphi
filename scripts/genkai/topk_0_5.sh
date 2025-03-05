@@ -1,7 +1,7 @@
 #!/bin/bash
 #PJM -L jobenv=singularity
-#PJM -L rscgrp=b-batch
-#PJM -L gpu=2
+#PJM -L rscgrp=c-batch
+#PJM -L node=1
 #PJM -L elapse=4:00:00
 #PJM -j
 #PJM -o ./job_outputs/output_%j.out
