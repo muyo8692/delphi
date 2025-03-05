@@ -98,7 +98,7 @@ def process_mlp_activations(
     sparsity_ratio: float = 0.01,
     top_k: Optional[int] = None,
     threshold: float = 0.3,
-    debug: bool = False,
+    debug: bool = True,
 ) -> Tensor:
     """
     Process raw MLP activations to make them sparse for interpretation.
@@ -113,7 +113,7 @@ def process_mlp_activations(
         Sparse version of the activations
     """
     max_acts = activations.max(dim=-1, keepdim=True)[0]
-    dynamic_threshold = max_acts * threshold
+    # dynamic_threshold = max_acts * threshold
 
     # Create sparse activations - start with a copy of the original
     sparse_acts = activations.clone()
@@ -135,11 +135,11 @@ def process_mlp_activations(
 
     final_sparsity = (sparse_acts > 0).float().mean().item()
 
-    if debug or torch.rand(1).item() < 0.01:  # Log ~1% of calls
-        print(f"Dynamic threshold: {dynamic_threshold.mean().item():.6f}")
-        print(
-            f"Threshold-based sparsity: {(activations > dynamic_threshold).float().mean().item():.6f}"
-        )
+    if debug and torch.rand(1).item() < 0.01:  # Log ~1% of calls
+        # print(f"Dynamic threshold: {dynamic_threshold.mean().item():.6f}")
+        # print(
+        #     f"Threshold-based sparsity: {(activations > dynamic_threshold).float().mean().item():.6f}"
+        # )
         print(f"Target sparsity: {sparsity_ratio:.4f}")
         print(f"Effective k: {effective_k} out of {hidden_dim}")
         print(f"Final sparsity: {final_sparsity:.6f}")

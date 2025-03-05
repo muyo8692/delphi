@@ -8,7 +8,7 @@
 
 cd ~/delphi
 
-sparsity_ratio=0.5
+sparsity_ratio=0.2
 
 uv run -m delphi \
   --model meta-llama/Llama-3.2-1B \
