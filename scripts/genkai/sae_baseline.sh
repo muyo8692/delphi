@@ -14,10 +14,12 @@ uv run -m delphi \
   --sparse_model_type sae \
   --explainer_model hugging-quants/Meta-Llama-3.1-70B-Instruct-AWQ-INT4 \
   --explainer_model_max_len 8192 \
-  --hookpoints layers.5 \
-  --name transcoder_interpretation \
+  --hookpoints layers.5.mlp \
+  --name sae_interpretation \
   --overwrite cache scores \
-  --max_latents 100 \
+  --max_latents 50 \
   --filter_bos True \
-  --n_tokens 100000 \
-  --batch_size 16
+  --n_tokens 10_000_000 \
+  --n_examples_test 50 \
+  --n_non_activating 50 \
+  --batch_size 32
